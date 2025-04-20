@@ -1,5 +1,5 @@
 [build]
-  command = "./build.sh"
+  command = "mkdir -p functions && GOOS=linux GOARCH=amd64 go build -o functions/hello main.go"
   functions  = "functions"
   publish = "public"
 [[redirects]]

@@ -1061,7 +1061,7 @@ func getSubjectJoinedBySubjectID(c *gin.Context) {
 
 var db *gorm.DB
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func main() {
 	dsn := "postgresql://neondb_owner:npg_m5ljwUdP8fFh@ep-mute-thunder-a4w86qpm-pooler.us-east-1.aws.neon.tech/finpro_api?sslmode=require"
 	var err error
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})

@@ -1062,7 +1062,7 @@ func getSubjectJoinedBySubjectID(c *gin.Context) {
 var db *gorm.DB
 
 func main() {
-	dsn := "host=localhost user=postgres password=Postgres5! dbname=finpro_api port=5432 sslmode=disable TimeZone=Asia/Jakarta" // Ganti dengan detail koneksi Anda
+	dsn := "postgresql://neondb_owner:npg_m5ljwUdP8fFh@ep-mute-thunder-a4w86qpm-pooler.us-east-1.aws.neon.tech/finpro_api?sslmode=require"
 	var err error
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

@@ -1,0 +1,8 @@
+[build]
+  command = "build.sh"
+  functions  = "functions"
+  publish = "public"
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/hello/:splat"
+  status = 200

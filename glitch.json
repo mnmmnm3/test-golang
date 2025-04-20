@@ -1,7 +1,0 @@
-{
-  "install": "go mod tidy",
-  "start": ".glitch/start.sh",
-  "watch": {
-    "ignore": ["go.mod", "go.sum"]
-  }
-}

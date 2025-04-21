@@ -1109,9 +1109,9 @@ func main() {
 	db.AutoMigrate(&Subject{})
 	db.AutoMigrate(&Subject_Joined{})
 	db.AutoMigrate(&Placement_Test{})
-	db.AutoMigrate(&Placement_Test_Answer{}) // error
+	db.AutoMigrate(&Placement_Test_Answer{})
 	db.AutoMigrate(&Learning_Material{})
-	db.AutoMigrate(&Attachment{}) // error
+	db.AutoMigrate(&Attachment{})
 	db.AutoMigrate(&Placement_Test_Result{})
 	db.AutoMigrate(&Quiz_Result{})
 	db.AutoMigrate(&Quiz{})

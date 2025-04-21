@@ -3,11 +3,13 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-resty/resty/v2"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
@@ -38,6 +40,39 @@ func isOnlyLink(text string) bool {
 
 func hasMaxLenght(text string, maxLenght int) bool {
 	return len(text) <= maxLenght
+}
+
+func chatbot(c *gin.Context) {
+	apiKey := os.Getenv("API_KEY")
+	model := os.Getenv("MODEL")
+
+	var req struct {
+		Message string `json:"message"`
+	}
+
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	client := resty.New()
+	resp, err := client.R().
+		SetHeader("Authorization", "Bearer "+apiKey).
+		SetHeader("Content-Type", "application/json").
+		SetBody(map[string]interface{}{
+			"model": model,
+			"messages": []map[string]string{
+				{"role": "user", "content": req.Message},
+			},
+		}).
+		Post("https://openrouter.ai/api/v1/chat/completions")
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "API call failed"})
+		return
+	}
+
+	c.Data(http.StatusOK, "application/json", resp.Body())
 }
 
 type Attachment struct {
@@ -1083,6 +1118,8 @@ func main() {
 	db.AutoMigrate(&Quiz_Answer{})
 
 	router := gin.Default()
+
+	router.POST("/chat", chatbot)
 
 	router.POST("/login", controllers.Login)
 	router.GET("/validate", middleware.RequireAuth, controllers.Validate)

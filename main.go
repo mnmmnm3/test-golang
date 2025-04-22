@@ -35,7 +35,7 @@ func isOnlyAlphabet(text string) bool {
 }
 
 func isOnlyLink(text string) bool {
-	return strings.HasPrefix("my string", text)
+	return (strings.HasPrefix(text, "http://") || strings.HasPrefix(text, "https://"))
 }
 
 func hasMaxLenght(text string, maxLenght int) bool {
@@ -94,6 +94,11 @@ func createAttachment(c *gin.Context) {
 	var learning_material Learning_Material
 	if err := db.First(&learning_material, newAttachment.LearningmaterialID).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Learning Material with that ID not found"})
+		return
+	}
+
+	if !isOnlyLink(newAttachment.Source) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "The source must be a link that starts with http:// or https://"})
 		return
 	}
 

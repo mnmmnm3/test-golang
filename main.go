@@ -179,6 +179,11 @@ func createInterest(c *gin.Context) {
 		return
 	}
 
+	if !isOnlyAlphabet(newInterest.Interest_name) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Interest name must be alphabet"})
+		return
+	}
+
 	db.Create(&newInterest)
 	c.JSON(http.StatusCreated, newInterest)
 }
@@ -856,6 +861,21 @@ func createStudent(c *gin.Context) {
 	var interest Interest
 	if err := db.First(&interest, newStudentData.InterestID).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Interest with that ID not found"})
+		return
+	}
+
+	if !isOnlyNumber(newStudent.Phone_number) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Phone number must be number"})
+		return
+	}
+
+	if !isOnlyAlphabet(newStudent.Name) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Name must be alphabet"})
+		return
+	}
+
+	if !isOnlyAlphabet(newStudent.Residence) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Residence must be alphabet"})
 		return
 	}
 
